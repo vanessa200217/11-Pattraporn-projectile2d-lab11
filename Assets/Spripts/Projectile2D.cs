@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile2D : MonoBehaviour
@@ -5,6 +6,7 @@ public class Projectile2D : MonoBehaviour
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject target; 
     [SerializeField] Rigidbody2D bulletPrefab;
+    [SerializeField] float timeToTarget = 1f; // เวลาที่ใช้ถึงเป้า
 
     void Update()
     {
@@ -19,7 +21,25 @@ public class Projectile2D : MonoBehaviour
             {
                 target.transform.position = new Vector2(hit.point.x, hit.point.y);
                 Debug.Log("Hit " + hit.collider.name);
+
+                Vector2 projectileVelocity = CalculateProjectileVelocity(shootPoint.position, hit.point, timeToTarget);
+
+                Rigidbody2D shootBullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
+
+                shootBullet.velocity = projectileVelocity;
             }
         }
+    }
+
+    Vector2 CalculateProjectileVelocity(Vector2 origin, Vector2 target, float time)
+    {
+        Vector2 distance = target - origin;
+
+        float velocityX = distance.x / time;
+
+        float gravity = Mathf.Abs(Physics2D.gravity.y);
+        float velocityY = (distance.y / time) + (0.5f * gravity * time);
+
+        return new Vector2(velocityX, velocityY);
     }
 }
