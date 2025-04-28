@@ -6,7 +6,7 @@ public class Projectile2D : MonoBehaviour
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject target; 
     [SerializeField] Rigidbody2D bulletPrefab;
-    [SerializeField] float timeToTarget = 1f; // เวลาที่ใช้ถึงเป้า
+    [SerializeField] float timeToTarget = 1f;
 
     void Update()
     {
